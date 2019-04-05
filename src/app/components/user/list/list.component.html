@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="row mb-3 mt-3">
+    <div class="col-12">
+      <h2 *ngIf="errors">Lỗi rồi bạn ê !!!!</h2>
+    </div>
+  </div>
+  <div class="row mb-3 mt-3">
+    <div class="col-12">
+      <button class="btn btn-success float-right" (click)="addUser()"><i class="fa fa-plus"></i> Add User</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-striped table-bordered table-hover">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Full Name</th>
+          <th scope="col">Phone</th>
+          <th scope="col">Website</th>
+          <th scope="col">Edit</th>
+          <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let use of users">
+          <th scope="row">{{use.id}}</th>
+          <td>{{use.username}}</td>
+          <td>{{use.phone}}</td>
+          <td>{{use.website}}</td>
+          <td>
+            <button class="btn btn-success" (click)="editUser(use)"><i class="fa fa-edit"></i></button>
+          </td>
+          <td>
+            <button class="btn btn-danger" (click)="deleteUser(use)"><i class="fa fa-trash"></i></button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

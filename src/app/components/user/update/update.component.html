@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row">
+    <div class="col-6 create-form">
+      <h3 class="text-center">Update User</h3>
+      <form>
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" aria-describedby="userHelp" placeholder="Enter name">
+          <small id="userHelp" class="form-text text-muted">We'll never share your user name with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group text-center">
+          <button type="submit" class="btn btn-primary mr-2">Submit</button>
+          <button type="button" class="btn btn-secondary" (click)="back()">Back</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

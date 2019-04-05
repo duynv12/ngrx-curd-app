@@ -1,0 +1,10 @@
+.create-form {
+  float: none;
+  margin: 0 auto;
+  margin-top: 10%;
+  padding: 21px;
+  background-color: aliceblue;
+}
+.error-text {
+  color: red;
+}
