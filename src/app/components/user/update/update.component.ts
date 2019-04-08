@@ -43,7 +43,6 @@ export class UpdateComponent implements OnInit, OnDestroy {
     this.loadData();
     this.subscription = this.getUsers.subscribe(res => {
       if (res) {
-        console.log(res);
         switch (res.action) {
           case ActionTypes.Detail:
             this.user = res.selected;

@@ -27,7 +27,6 @@ export class ListComponent implements OnInit, OnDestroy {
     this.loadUser();
     this.subscription = this.getUsers.subscribe(res => {
       if (res) {
-        console.log(res);
         this.errors = res.error;
         this.users = res.data;
       }
