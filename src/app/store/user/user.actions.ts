@@ -2,7 +2,9 @@ import {Action} from '@ngrx/store';
 
 export enum ActionTypes {
   Load = '[User Component] Load',
+  LoadUser = '[User Component] LoadUser',
   List = '[User Component] List',
+  Detail = '[User Component] Detail',
   Create = '[User Component] Create',
   CreateErr = '[User Component] CreateErr',
   CreateSuccess = '[User Component] CreateSuccess',
@@ -18,8 +20,18 @@ export class LoadUsers {
   readonly type = ActionTypes.Load;
 }
 
+export class LoadUser {
+  readonly type = ActionTypes.LoadUser;
+  constructor(public id: string) {}
+}
+
 export class GetUsers implements Action {
   readonly type = ActionTypes.List;
+  constructor(public payload: any) {}
+}
+
+export class GetUser implements Action {
+  readonly type = ActionTypes.Detail;
   constructor(public payload: any) {}
 }
 

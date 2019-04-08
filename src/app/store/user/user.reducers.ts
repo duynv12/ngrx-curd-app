@@ -30,6 +30,14 @@ export function userReducer(state = initialState, action) {
         selected: null,
         error: null
       };
+    case ActionTypes.Detail:
+      return {
+        ...state,
+        action: action.type,
+        done: true,
+        selected: action.payload,
+        error: null
+      };
     case ActionTypes.Create:
       user = action.payload;
       return {
@@ -65,7 +73,6 @@ export function userReducer(state = initialState, action) {
         error: null
       };
     case  ActionTypes.UpdateSuccess:
-      console.log(state);
       return {
         ...state,
         action: action.type,

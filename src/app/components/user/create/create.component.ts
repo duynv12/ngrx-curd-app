@@ -1,20 +1,25 @@
-import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
-import {Create, Delete} from '../../../store/user/user.actions';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActionTypes, Create} from '../../../store/user/user.actions';
 import {Store} from '@ngrx/store';
 import * as fromUsers from '../../../store/user/user.reducers';
+import {Router} from '@angular/router';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
   styleUrls: ['./create.component.css']
 })
-export class CreateComponent implements OnInit {
+export class CreateComponent implements OnInit, OnDestroy {
 
   public formErrors = {
     name: '',
     email: ''
   };
+
+  getUsers: Observable<any>;
+  subscription: Subscription;
 
   createUserForm = this.fb.group({
     name: ['', Validators.required],
@@ -22,10 +27,26 @@ export class CreateComponent implements OnInit {
   });
 
   constructor(private fb: FormBuilder,
-              private store: Store<fromUsers.State>) {
+              private store: Store<fromUsers.State>,
+              private router: Router) {
+    this.getUsers = this.store.select('userReducers');
   }
 
   ngOnInit() {
+    this.subscription = this.getUsers.subscribe(res => {
+      if (res) {
+        console.log(res);
+        switch (res.action) {
+          case  ActionTypes.CreateSuccess:
+            this.router.navigateByUrl('/');
+            break;
+          case  ActionTypes.CreateErr:
+            break;
+          default:
+            break;
+        }
+      }
+    });
   }
 
   submitForm() {
@@ -63,6 +84,10 @@ export class CreateComponent implements OnInit {
 
   back() {
     window.history.back();
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }

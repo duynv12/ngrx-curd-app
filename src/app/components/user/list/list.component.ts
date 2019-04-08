@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {Delete, LoadUsers} from '../../../store/user/user.actions';
 import * as fromUsers from '../../../store/user/user.reducers';
@@ -11,8 +11,9 @@ import {Router} from '@angular/router';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
   getUsers: Observable<any>;
+  subscription: Subscription;
   users: any;
   errors: any;
 
@@ -24,8 +25,9 @@ export class ListComponent implements OnInit {
 
   ngOnInit() {
     this.loadUser();
-    this.getUsers.subscribe(res => {
+    this.subscription = this.getUsers.subscribe(res => {
       if (res) {
+        console.log(res);
         this.errors = res.error;
         this.users = res.data;
       }
@@ -50,5 +52,9 @@ export class ListComponent implements OnInit {
    */
   loadUser() {
     this.store.dispatch(new LoadUsers());
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

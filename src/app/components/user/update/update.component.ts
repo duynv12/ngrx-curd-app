@@ -1,17 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {Create, Update} from '../../../store/user/user.actions';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActionTypes, LoadUser, Update} from '../../../store/user/user.actions';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
 import * as fromUsers from '../../../store/user/user.reducers';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Observable, Subscription} from 'rxjs';
+import {User} from '../../../models/user';
 
 @Component({
   selector: 'app-update',
   templateUrl: './update.component.html',
   styleUrls: ['./update.component.css']
 })
-export class UpdateComponent implements OnInit {
+export class UpdateComponent implements OnInit, OnDestroy {
 
+  getUsers: Observable<any>;
+  subscription: Subscription;
+  user = new User();
   public formErrors = {
     name: '',
     email: ''
@@ -26,13 +31,43 @@ export class UpdateComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private route: ActivatedRoute,
-              private store: Store<fromUsers.State>) {
+              private store: Store<fromUsers.State>,
+              private router: Router) {
     this.route.paramMap.subscribe(params => {
       this.userId = params.get('id');
+      this.getUsers = this.store.select('userReducers');
     });
   }
 
   ngOnInit() {
+    this.loadData();
+    this.subscription = this.getUsers.subscribe(res => {
+      if (res) {
+        console.log(res);
+        switch (res.action) {
+          case ActionTypes.Detail:
+            this.user = res.selected;
+            if (this.user) {
+              this.updateUserForm.setValue({
+                name: this.user.name,
+                email: this.user.email
+              });
+            }
+            break;
+          case  ActionTypes.UpdateSuccess:
+            this.router.navigateByUrl('/');
+            break;
+          case  ActionTypes.UpdateErr:
+            break;
+          default:
+            break;
+        }
+      }
+    });
+  }
+
+  loadData() {
+    this.store.dispatch(new LoadUser(this.userId));
   }
 
   submitForm() {
@@ -73,4 +108,7 @@ export class UpdateComponent implements OnInit {
     window.history.back();
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

@@ -3,7 +3,21 @@ import {Effect, Actions, ofType} from '@ngrx/effects';
 import {Action} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import {UserService} from '../../services/user.service';
-import {ActionTypes, Delete, DeleteErr, GetUsers, DeleteSuccess, Create, Update, UpdateErr, UpdateSuccess, CreateErr, CreateSuccess} from './user.actions';
+import {
+  ActionTypes,
+  Delete,
+  DeleteErr,
+  GetUsers,
+  DeleteSuccess,
+  Create,
+  Update,
+  UpdateErr,
+  UpdateSuccess,
+  CreateErr,
+  CreateSuccess,
+  LoadUser,
+  GetUser
+} from './user.actions';
 import {mergeMap, map, switchMap, catchError} from 'rxjs/operators';
 import {User} from '../../models/user';
 
@@ -20,6 +34,19 @@ export class UserEffects {
         return new GetUsers(res);
       })
     ))
+  );
+
+  @Effect()
+  getUserById$: Observable<Action> = this.actions$.pipe(
+    ofType(ActionTypes.LoadUser),
+    mergeMap((action: LoadUser) => {
+      return this.userService.getUserById(action.id).pipe(
+        map((res) => {
+          const data = (res[0]) ? res[0] : res;
+          return new GetUser(data);
+        })
+      );
+    })
   );
 
   @Effect()
