@@ -19,6 +19,7 @@ const initialState: State = {
 };
 
 export function userReducer(state = initialState, action) {
+  let user: User;
   switch (action.type) {
     case ActionTypes.List:
       state.data = action.payload;
@@ -30,8 +31,7 @@ export function userReducer(state = initialState, action) {
         error: null
       };
     case ActionTypes.Create:
-      // do something
-      const user: User = action.payload;
+      user = action.payload;
       return {
         ...state,
         action: action.type,
@@ -40,17 +40,14 @@ export function userReducer(state = initialState, action) {
         error: null
       };
     case  ActionTypes.CreateSuccess:
-      console.log(action.payload);
-      console.log(state);
       return {
         ...state,
         action: action.type,
-        done: false,
+        done: true,
         selected: null,
         error: null
       };
     case  ActionTypes.CreateErr:
-      console.log(action.payload);
       return {
         ...state,
         action: action.type,
@@ -59,9 +56,16 @@ export function userReducer(state = initialState, action) {
         error: null
       };
     case ActionTypes.Update:
-      // do something
-      break;
+      user = action.payload;
+      return {
+        ...state,
+        action: action.type,
+        done: true,
+        selected: user,
+        error: null
+      };
     case  ActionTypes.UpdateSuccess:
+      console.log(state);
       return {
         ...state,
         action: action.type,
@@ -70,7 +74,6 @@ export function userReducer(state = initialState, action) {
         error: null
       };
     case  ActionTypes.UpdateErr:
-      console.log(action.payload);
       return {
         ...state,
         action: action.type,
@@ -95,7 +98,6 @@ export function userReducer(state = initialState, action) {
         error: action.payload
       };
     case  ActionTypes.DeleteSuccess:
-      console.log(action.payload);
       return {
         ...state,
         action: action.type,

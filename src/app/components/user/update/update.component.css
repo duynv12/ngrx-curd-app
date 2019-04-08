@@ -5,3 +5,7 @@
   padding: 21px;
   background-color: aliceblue;
 }
+
+.error-text {
+  color: red;
+}
